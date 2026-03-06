@@ -123,3 +123,90 @@ ORDER BY late_count DESC;
 ├── 🖼️ 15_day_window.png     # Visualizations
 └── README.md
 ```
+
+---
+
+## 💳 5. Business Health & Payments
+### Analiza metod płatności i satysfakcji
+
+**EN:** Investigating if specific payment methods are prone to delivery delays or impact customer satisfaction.
+**PL:** Badanie, czy konkretne metody płatności są powiązane z opóźnieniami lub wpływają na satysfakcję klientów.
+
+```sql
+SELECT 
+    is_late,
+    payment_type,
+    COUNT(*) as total_orders,
+    ROUND(AVG(payment_value), 2) as avg_revenue,
+    ROUND(AVG(review_score), 2) as avg_satisfaction
+FROM olist_dataset_general
+GROUP BY is_late, payment_type;
+```
+
+---
+
+## 🎯 6. Delivery Algorithm Precision
+### Precyzja szacowania czasu dostawy
+
+**EN:** Measuring the gap between Olist's delivery promises and reality across different cities.
+**PL:** Pomiar różnicy między obiecanym a rzeczywistym czasem dostawy w różnych miastach.
+
+```sql
+SELECT 
+    customer_city,
+    ROUND(AVG(Estimated_vs_Actual), 2) AS avg_days_off,
+    COUNT(*) AS total_orders
+FROM olist_dataset_general
+WHERE is_late = 'Yes'
+GROUP BY customer_city
+HAVING total_orders > 20
+ORDER BY avg_days_off ASC;
+```
+> **Insight:** Positive values indicate delivery before the deadline, while negative values show the scale of the "broken promise" in days.
+
+---
+
+## 👥 7. Customer Behavior & Retention
+### Lojalność i wzorce zakupowe
+
+**EN:** Analyzing repeat purchases and the impact of the purchase day (weekend vs. weekday) on satisfaction.
+**PL:** Analiza powracalności klientów oraz wpływu dnia zakupu (weekend vs. tydzień) na satysfakcję.
+
+```sql
+-- Weekend vs Weekday Satisfaction
+SELECT 
+    CASE WHEN DAYOFWEEK(order_purchase_timestamp) IN (1, 7) THEN 'Weekend' ELSE 'Weekday' END as purchase_period,
+    COUNT(*) as total_orders,
+    ROUND(AVG(Actual_Delivery_Time), 2) as avg_delivery_time,
+    ROUND(AVG(review_score), 2) as avg_satisfaction
+FROM olist_dataset_general
+GROUP BY purchase_period;
+```
+> **Note:** Initial CRM analysis revealed that `customer_id` is transaction-based. For true retention, mapping via `customer_unique_id` is required.
+
+---
+
+## ⚠️ 8. Risk & Quality Mitigation
+### Identyfikacja zamówień wysokiego ryzyka
+
+**EN:** Calculating the financial value of orders that are both delayed and poorly rated (at-risk revenue).
+**PL:** Obliczanie wartości finansowej zamówień, które są jednocześnie spóźnione i nisko ocenione (przychód zagrożony).
+
+```sql
+SELECT 
+    is_late,
+    review_score,
+    COUNT(*) as number_of_orders,
+    ROUND(SUM(payment_value), 2) as total_at_risk_value
+FROM v_master_general_data_3
+WHERE is_late = 'Yes' AND review_score = 1
+GROUP BY is_late, review_score;
+```
+
+---
+
+## 🚀 9. Future Action Points | Rekomendacje
+* 🛠️ **CRM Integration:** Implement `customer_unique_id` mapping to track long-term Customer Lifetime Value (CLV).
+* 🛰️ **Logistics Hubs:** Focus on cities with the highest `avg_days_off` to optimize local distribution centers.
+* 💳 **Payment optimization:** Review the processing time for payment methods with higher delay rates.
+
