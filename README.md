@@ -126,7 +126,7 @@ ORDER BY late_count DESC;
 
 ---
 
-## 💳 5. Business Health & Payments
+## 💳 7. Business Health & Payments
 ### Analiza metod płatności i satysfakcji
 
 **EN:** Investigating if specific payment methods are prone to delivery delays or impact customer satisfaction.
@@ -145,7 +145,7 @@ GROUP BY is_late, payment_type;
 
 ---
 
-## 🎯 6. Delivery Algorithm Precision
+## 🎯 8. Delivery Algorithm Precision
 ### Precyzja szacowania czasu dostawy
 
 **EN:** Measuring the gap between Olist's delivery promises and reality across different cities.
@@ -166,7 +166,7 @@ ORDER BY avg_days_off ASC;
 
 ---
 
-## 👥 7. Customer Behavior & Retention
+## 👥 9. Customer Behavior & Retention
 ### Lojalność i wzorce zakupowe
 
 **EN:** Analyzing repeat purchases and the impact of the purchase day (weekend vs. weekday) on satisfaction.
@@ -186,7 +186,7 @@ GROUP BY purchase_period;
 
 ---
 
-## ⚠️ 8. Risk & Quality Mitigation
+## ⚠️ 10. Risk & Quality Mitigation
 ### Identyfikacja zamówień wysokiego ryzyka
 
 **EN:** Calculating the financial value of orders that are both delayed and poorly rated (at-risk revenue).
@@ -205,7 +205,7 @@ GROUP BY is_late, review_score;
 
 ---
 
-## 🚀 9. Future Action Points | Rekomendacje
+## 🚀 11. Future Action Points | Rekomendacje
 * 🛠️ **CRM Integration:** Implement `customer_unique_id` mapping to track long-term Customer Lifetime Value (CLV).
 * 🛰️ **Logistics Hubs:** Focus on cities with the highest `avg_days_off` to optimize local distribution centers.
 * 💳 **Payment optimization:** Review the processing time for payment methods with higher delay rates.
