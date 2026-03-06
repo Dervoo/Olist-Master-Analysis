@@ -1,7 +1,7 @@
 # 📊 Olist Data Engineering & Logistics Analysis
 ### Analiza Logistyki i Inżynierii Danych e-Commerce
 
-![SQL](https://img.shields.io/badge/SQL-MySQL-blue?style=flat-square&logo=mysql) ![Power BI](https://img.shields.io/badge/Power%20BI-Data%20Viz-yellow?style=flat-square&logo=powerbi) ![Data Engineering](https://img.shields.io/badge/Inżynieria%20Danych-Data%20Engineering-orange?style=flat-square) ![GitHub](https://img.shields.io/badge/GitHub-Project-lightgrey?style=flat-square&logo=github)
+![SQL](https://img.shields.io/badge/SQL-MySQL-blue?style=flat-square&logo=mysql) ![Power BI](https://img.shields.io/badge/Power%20BI-Data%20Viz-yellow?style=flat-square&logo=powerbi) ![Inżynieria Danych](https://img.shields.io/badge/Inżynieria%20Danych-Data%20Engineering-orange?style=flat-square) ![GitHub](https://img.shields.io/badge/GitHub-Project-lightgrey?style=flat-square&logo=github)
 
 Comprehensive analysis of the **Olist** e-commerce ecosystem. / Kompleksowa analiza ekosystemu e-commerce **Olist**.
 
@@ -42,6 +42,10 @@ WHERE order_delivered_customer_date IS NOT NULL;
 **EN:** Checking if higher-value orders are lost during cancellation.
 **PL:** Sprawdzenie, czy tracimy droższe zamówienia w procesie anulacji.
 
+#### 📈 Financial Structure & Revenue Loss
+*Visual representation of order values across different statuses.*
+![Financial Performance](./financial_performance.png)
+
 ```sql
 SELECT 
     order_status, 
@@ -62,6 +66,10 @@ ORDER BY avg_order_value DESC;
 **EN:** Identified cases where delivery costs exceed 2000% of product price.
 **PL:** Identyfikacja przypadków, gdzie koszt dostawy przekracza 2000% ceny towaru.
 
+#### 📈 Shipping vs Product Price Analysis
+*Identifying disproportionate shipping costs that affect conversion.*
+![Shipping Outliers](./shipping_outliers_analysis.png)
+
 ```sql
 -- Shipping cost as % of product price
 SELECT 
@@ -80,6 +88,10 @@ LIMIT 10;
 **EN:** Identifying sellers with the highest absolute delay volume to improve NPS.
 **PL:** Wyłonienie sprzedawców z największą liczbą spóźnień w celu poprawy wskaźnika NPS.
 
+#### 📈 Top Delayed Sellers Ranking
+*Data-driven identification of problematic fulfillment partners.*
+![Seller Delay Analysis](./seller_delay_analysis.png)
+
 ```sql
 SELECT 
     seller_id, 
@@ -95,13 +107,13 @@ ORDER BY late_count DESC;
 
 ---
 
-## 📈 5. Visualizations | Podsumowanie Graficzne
+## 📈 5. Global Visualizations | Podsumowanie Graficzne
 
 #### 1️⃣ Delay Window Analysis
 *Most delays occur around the 15-day delivery mark.*
 ![15-Day Window](./15_day_window.png)
 
-#### 2️⃣ Top Delayed Sellers
+#### 2️⃣ Seller Delay Ranking
 *Identification of top offenders by absolute delay volume.*
 ![Seller Ranking](./seller_ranking.png)
 
@@ -132,6 +144,10 @@ ORDER BY late_count DESC;
 **EN:** Investigating if specific payment methods are prone to delivery delays or impact customer satisfaction.
 **PL:** Badanie, czy konkretne metody płatności są powiązane z opóźnieniami lub wpływają na satysfakcję klientów.
 
+#### 📈 Payment Methods vs Delivery Performance
+*Analysis of payment types and their correlation with order delays.*
+![Payment Analysis](./payment_analysis.png)
+
 ```sql
 SELECT 
     is_late,
@@ -150,6 +166,10 @@ GROUP BY is_late, payment_type;
 
 **EN:** Measuring the gap between Olist's delivery promises and reality across different cities.
 **PL:** Pomiar różnicy między obiecanym a rzeczywistym czasem dostawy w różnych miastach.
+
+#### 📈 Delivery Promise vs Reality Gap
+*Visualizing the accuracy of Olist's delivery time estimation algorithm.*
+![Delivery Precision](./delivery_precision.png)
 
 ```sql
 SELECT 
@@ -172,6 +192,10 @@ ORDER BY avg_days_off ASC;
 **EN:** Analyzing repeat purchases and the impact of the purchase day (weekend vs. weekday) on satisfaction.
 **PL:** Analiza powracalności klientów oraz wpływu dnia zakupu (weekend vs. tydzień) na satysfakcję.
 
+#### 📈 Weekend vs Weekday Trends
+*Comparison of sales volume and satisfaction based on the time of purchase.*
+![Customer Behavior](./customer_behavior_trends.png)
+
 ```sql
 -- Weekend vs Weekday Satisfaction
 SELECT 
@@ -182,7 +206,6 @@ SELECT
 FROM olist_dataset_general
 GROUP BY purchase_period;
 ```
-> **Note:** Initial CRM analysis revealed that `customer_id` is transaction-based. For true retention, mapping via `customer_unique_id` is required.
 
 ---
 
@@ -191,6 +214,10 @@ GROUP BY purchase_period;
 
 **EN:** Calculating the financial value of orders that are both delayed and poorly rated (at-risk revenue).
 **PL:** Obliczanie wartości finansowej zamówień, które są jednocześnie spóźnione i nisko ocenione (przychód zagrożony).
+
+#### 📈 Revenue at Risk Analysis
+*Quantifying financial losses due to poor delivery performance.*
+![Risk Mitigation](./revenue_at_risk_chart.png)
 
 ```sql
 SELECT 
@@ -209,4 +236,3 @@ GROUP BY is_late, review_score;
 * 🛠️ **CRM Integration:** Implement `customer_unique_id` mapping to track long-term Customer Lifetime Value (CLV).
 * 🛰️ **Logistics Hubs:** Focus on cities with the highest `avg_days_off` to optimize local distribution centers.
 * 💳 **Payment optimization:** Review the processing time for payment methods with higher delay rates.
-
