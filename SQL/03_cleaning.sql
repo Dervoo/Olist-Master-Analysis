@@ -36,3 +36,30 @@ SELECT
     (i.price + i.freight_value) AS total_value
 FROM olist_orders o
 JOIN olist_order_items i ON o.order_id = i.order_id;
+
+-- 6. Tworzymy widok z najważniejszymi danymi do dalszej analizy
+CREATE VIEW v_master_general_data_3 AS
+SELECT
+o.order_id,
+o.customer_id,
+o.order_status,
+o.order_purchase_timestamp,
+o.order_approved_at, 
+o.order_delivered_carrier_date, 
+o.order_delivered_customer_date, 
+o.order_estimated_delivery_date, 
+o.Actual_Delivery_Time, 
+o.Estimated_vs_Actual, 
+o.Is_Late, 
+o.Customer_City, 
+o.Customers_Zip_Code, 
+o.Payment_Type, 
+o.Payment_Value, 
+o.Review_Score,
+o.price,
+o.freight_value,
+o.total_value,
+o.Customers_Unique_Id,
+i.seller_id
+FROM v_master_general_data_2 o
+JOIN olist_order_items2 i ON o.order_id = i.order_id;

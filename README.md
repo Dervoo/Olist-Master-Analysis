@@ -45,6 +45,8 @@ WHERE order_delivered_customer_date IS NOT NULL;
 #### 📈 Financial Structure & Revenue Loss
 *Visual representation of order values across different statuses.*
 ![Financial Performance](./financial_performance.png)
+*Comparative analysis of delivered vs. canceled order values to determine revenue leakage.*
+![Average Prices for Canceled & Delivered](avg_price_canc_del.png)
 
 ```sql
 SELECT 
@@ -69,6 +71,8 @@ ORDER BY avg_order_value DESC;
 #### 📈 Shipping vs Product Price Analysis
 *Identifying disproportionate shipping costs that affect conversion.*
 ![Shipping Outliers](./shipping_outliers_analysis.png)
+*Identification of extreme cases where logistics costs drastically outweigh product margins.*
+![Delivery tiers delay & Average](prices_to_delays_and_payments.png)
 
 ```sql
 -- Shipping cost as % of product price
@@ -91,6 +95,8 @@ LIMIT 10;
 #### 📈 Top Delayed Sellers Ranking
 *Data-driven identification of problematic fulfillment partners.*
 ![Seller Delay Analysis](./seller_delay_analysis.png)
+*Average generated volume of delays, requiring operational intervention*
+![Average Delivery Delays Total](avg_delay_total.png)
 
 ```sql
 SELECT 
@@ -121,6 +127,12 @@ ORDER BY late_count DESC;
 *Highlighting risk for mid-scale transactions.*
 ![Volume Analysis](./volume_analysis_10_50.png)
 
+![Delivery On-time vs Delayed](ontime_vs_delayed_delivery.png)
+
+![Average Delivery Delays Total](avg_delay_total.png)
+*Correlation between average warehouse storing to average reviews scores.*
+![Warehouse Time to Reviews Correlation](warehousetime_to_avgreview.png)
+
 ---
 
 ## 📂 6. Project Structure | Struktura Projektu
@@ -147,6 +159,8 @@ ORDER BY late_count DESC;
 #### 📈 Payment Methods vs Delivery Performance
 *Analysis of payment types and their correlation with order delays.*
 ![Payment Analysis](./payment_analysis.png)
+*Verification of the correlation between the payment amount and final satisfaction.*
+![Average Payment Value based on Reviews](payment_to_reviews.png)
 
 ```sql
 SELECT 
@@ -170,6 +184,8 @@ GROUP BY is_late, payment_type;
 #### 📈 Delivery Promise vs Reality Gap
 *Visualizing the accuracy of Olist's delivery time estimation algorithm.*
 ![Delivery Precision](./delivery_precision.png)
+*Geographical analysis of delivery estimation error to optimize promises made to the customer - example.*
+![Best City](cities_to_warehouse.png)
 
 ```sql
 SELECT 
@@ -195,6 +211,8 @@ ORDER BY avg_days_off ASC;
 #### 📈 Weekend vs Weekday Trends
 *Comparison of sales volume and satisfaction based on the time of purchase.*
 ![Customer Behavior](./customer_behavior_trends.png)
+*Examination of sales trends and satisfaction levels based on the timing of order placement.*
+![Total Sales by Date](total_sales_to_date.png)
 
 ```sql
 -- Weekend vs Weekday Satisfaction
@@ -218,6 +236,8 @@ GROUP BY purchase_period;
 #### 📈 Revenue at Risk Analysis
 *Quantifying financial losses due to poor delivery performance.*
 ![Risk Mitigation](./revenue_at_risk_chart.png)
+*Financial quantification of risk arising from the combination of logistics delays and critically low ratings.*
+![Ratings based on Delivery Delays](reviews_to_delays.png)
 
 ```sql
 SELECT 
