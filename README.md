@@ -253,6 +253,33 @@ GROUP BY is_late, review_score;
 
 ---
 
+## 🐍 12. Advanced Python Analytics & ML
+### Zaawansowana analityka i uczenie maszynowe
+
+**EN:** We introduced a Python-based analytical layer to automate ETL, perform customer segmentation (RFM), forecast sales, and predict delivery times using Machine Learning.
+**PL:** Wprowadziliśmy warstwę analityczną w Pythonie, aby zautomatyzować ETL, przeprowadzić segmentację klientów (RFM), prognozować sprzedaż oraz przewidywać czas dostawy za pomocą uczenia maszynowego.
+
+#### 🛠️ Quick Start | Szybki Start
+```powershell
+# 1. Install dependencies / Zainstaluj biblioteki
+py -m pip install -r Python/requirements.txt
+
+# 2. Run full analytics pipeline / Uruchom pełny proces analityczny
+py Python/run_all.py
+
+# 3. Launch interactive Dashboard / Uruchom interaktywny Dashboard
+py -m streamlit run Python/streamlit_app/app.py
+```
+
+#### 📊 Python Module Components:
+*   **ETL Pipeline (`etl_pipeline.py`):** Automates CSV cleaning and loads data into a high-performance SQLite database (`olist_clean.db`).
+*   **RFM Segmentation (`rfm_analysis.py`):** Classifies customers into business segments: *Champions, Loyal, At Risk, Hibernating*.
+*   **Sales Forecasting (`sales_forecasting.py`):** Predicts revenue for the next 30 days based on historical trends.
+*   **Delivery Prediction ML (`delivery_prediction.py`):** A Random Forest model that estimates delivery time (in days) based on purchase hour, day of the week, and region.
+*   **Interactive Dashboard (`app.py`):** A Streamlit application for real-time data exploration and ML model interaction.
+
+---
+
 ## 🚀 11. Future Action Points | Rekomendacje
 * 🛠️ **CRM Integration:** Implement `customer_unique_id` mapping to track long-term Customer Lifetime Value (CLV).
 * 🛰️ **Logistics Hubs:** Focus on cities with the highest `avg_days_off` to optimize local distribution centers.
