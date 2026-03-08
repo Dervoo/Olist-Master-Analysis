@@ -256,15 +256,16 @@ GROUP BY is_late, review_score;
 ## 🐍 12. Advanced Python Analytics & ML
 ### Zaawansowana analityka i uczenie maszynowe
 
-**EN:** We introduced a Python-based analytical layer to automate ETL, perform customer segmentation (RFM), forecast sales, and predict delivery times using Machine Learning.
-**PL:** Wprowadziliśmy warstwę analityczną w Pythonie, aby zautomatyzować ETL, przeprowadzić segmentację klientów (RFM), prognozować sprzedaż oraz przewidywać czas dostawy za pomocą uczenia maszynowego.
+**EN:** We introduced a Python-based analytical layer to automate ETL, perform customer segmentation (RFM), forecast sales, and predict delivery times using Machine Learning. Now including NLP and Geo-spatial clustering.
+**PL:** Wprowadziliśmy warstwę analityczną w Pythonie, aby zautomatyzować ETL, przeprowadzić segmentację klientów (RFM), prognozować sprzedaż oraz przewidywać czas dostawy (ML). Dodatkowo wdrożono analizę nastrojów (NLP) i optymalizację logistyczną.
 
-#### 🛠️ Quick Start | Szybki Start
+#### 🛠️ Quick Start | Szybki Start (Windows Recommended)
 ```powershell
 # 1. Install dependencies / Zainstaluj biblioteki
 py -m pip install -r Python/requirements.txt
 
-# 2. Run full analytics pipeline / Uruchom pełny proces analityczny
+# 2. Run full analytics pipeline (ETL -> RFM -> ML -> NLP -> PDF)
+# Uruchom pełny proces analityczny i wygeneruj raporty
 py Python/run_all.py
 
 # 3. Launch interactive Dashboard / Uruchom interaktywny Dashboard
@@ -275,8 +276,10 @@ py -m streamlit run Python/streamlit_app/app.py
 *   **ETL Pipeline (`etl_pipeline.py`):** Automates CSV cleaning and loads data into a high-performance SQLite database (`olist_clean.db`).
 *   **RFM Segmentation (`rfm_analysis.py`):** Classifies customers into business segments: *Champions, Loyal, At Risk, Hibernating*.
 *   **Sales Forecasting (`sales_forecasting.py`):** Predicts revenue for the next 30 days based on historical trends.
-*   **Delivery Prediction ML (`delivery_prediction.py`):** A Random Forest model that estimates delivery time (in days) based on purchase hour, day of the week, and region.
-*   **Interactive Dashboard (`app.py`):** A Streamlit application for real-time data exploration and ML model interaction.
+*   **Delivery Prediction ML (`delivery_prediction.py`):** A Random Forest model that estimates delivery time (in days).
+*   **Sentiment Analysis NLP (`sentiment_analysis.py`):** Analyzes customer feedback to detect positive/negative emotions.
+*   **Logistics Optimization (`logistics_optimization.py`):** Uses K-Means clustering to find 5 optimal locations for new logistics hubs in Brazil.
+*   **Executive Report Generator (`generate_report.py`):** Automatically creates a professional **PDF Summary** in `Python_Results/`.
 
 ---
 
