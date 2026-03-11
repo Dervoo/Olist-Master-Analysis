@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import plotly.express as px
 import joblib
+import sqlite3
 
 # Konfiguracja strony
 st.set_page_config(page_title="Olist Advanced Analytics 3.0", layout="wide")
@@ -12,6 +13,7 @@ st.markdown("Kompleksowy ekosystem: SQL + Python (ML, NLP, Clustering, PDF Repor
 
 # Ścieżka do wyników
 RESULTS_DIR = 'Python_Results'
+DB_PATH = os.path.join(RESULTS_DIR, 'olist_clean.db')
 
 @st.cache_data
 def load_csv(name):
@@ -20,10 +22,19 @@ def load_csv(name):
         return pd.read_csv(path)
     return None
 
+def run_sql_query(query):
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        df = pd.read_sql_query(query, conn)
+        conn.close()
+        return df
+    except Exception as e:
+        return f"Error: {str(e)}"
+
 # Sidebar
 st.sidebar.header("Ustawienia Panelu")
 menu = st.sidebar.selectbox("Wybierz Moduł", 
-    ["Overview & RFM", "Sales Forecasting", "Sentiment Analysis (NLP)", "Logistics Optimization", "Delivery Prediction"])
+    ["Overview & RFM", "Sales Forecasting", "Sentiment Analysis (NLP)", "Logistics Optimization", "Delivery Prediction", "SQL Live Explorer"])
 
 if menu == "Overview & RFM":
     st.header("👥 Segmentacja Klientów (RFM)")
@@ -108,6 +119,33 @@ elif menu == "Delivery Prediction":
             if state_col in input_data.columns: input_data[state_col] = 1
             prediction = model.predict(input_data)[0]
             st.success(f"Szacowany czas dostawy: **{prediction:.1f} dni**")
+
+elif menu == "SQL Live Explorer":
+    st.header("🔍 SQL Lab: Direct Database Access")
+    st.markdown("Eksploruj surowe dane Olist w czasie rzeczywistym używając języka SQL (SQLite).")
+    
+    with st.expander("📋 Zobacz strukturę tabel (Schema)"):
+        tables = run_sql_query("SELECT name FROM sqlite_master WHERE type='table';")
+        st.table(tables)
+        
+    preset_queries = {
+        "Domyślne: Wybierz...": "SELECT * FROM olist_orders_dataset LIMIT 10",
+        "Top 10 Miast wg Sprzedaży": "SELECT customer_city, COUNT(*) as orders_count FROM olist_customers_dataset JOIN olist_orders_dataset ON olist_customers_dataset.customer_id = olist_orders_dataset.customer_id GROUP BY customer_city ORDER BY orders_count DESC LIMIT 10",
+        "Podział Metod Płatności": "SELECT payment_type, COUNT(*) as count, AVG(payment_value) as avg_value FROM olist_order_payments_dataset GROUP BY payment_type ORDER BY count DESC",
+        "Najpopularniejsze Kategorie": "SELECT product_category_name, COUNT(*) as count FROM olist_products_dataset GROUP BY product_category_name ORDER BY count DESC LIMIT 15"
+    }
+    
+    selected_preset = st.selectbox("Szybkie Zapytania (Pre-sets):", list(preset_queries.keys()))
+    
+    user_query = st.text_area("Twoje zapytanie SQL:", value=preset_queries[selected_preset], height=150)
+    
+    if st.button("Uruchom Zapytanie"):
+        res = run_sql_query(user_query)
+        if isinstance(res, str):
+            st.error(res)
+        else:
+            st.success(f"Pobrano {len(res)} wierszy.")
+            st.dataframe(res, use_container_width=True)
 
 st.sidebar.markdown("---")
 st.sidebar.download_button(
