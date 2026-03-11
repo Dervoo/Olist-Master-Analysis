@@ -133,8 +133,6 @@ ORDER BY late_count DESC;
 
 ![Delivery On-time vs Delayed](ontime_vs_delayed_delivery.png)
 
-![Average Delivery Delays Total](avg_delay_total.png)
-
 *Correlation between average warehouse storing to average reviews scores.*
 ![Warehouse Time to Reviews Correlation](warehousetime_to_avgreview.png)
 
