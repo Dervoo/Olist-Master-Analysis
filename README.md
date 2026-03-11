@@ -98,8 +98,9 @@ LIMIT 10;
 
 
 *Average generated volume of delays, requiring operational intervention*
-
-![Average Delivery Delays Total](avg_delay_total.png)
+<p align="center">
+    <img src="avg_delay_total.png" width="80%">
+</p
 
 ```sql
 SELECT 
