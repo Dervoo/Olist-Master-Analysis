@@ -100,7 +100,7 @@ LIMIT 10;
 *Average generated volume of delays, requiring operational intervention*
 <div align="center">
     <img src="avg_delay_total.png" width="100%">
-</div
+</div>
 
 ```sql
 SELECT 
