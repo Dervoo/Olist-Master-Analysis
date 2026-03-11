@@ -130,9 +130,13 @@ elif menu == "SQL Live Explorer":
         
     preset_queries = {
         "Domyślne: Wybierz...": "SELECT * FROM olist_orders_dataset LIMIT 10",
-        "Top 10 Miast wg Sprzedaży": "SELECT customer_city, COUNT(*) as orders_count FROM olist_customers_dataset JOIN olist_orders_dataset ON olist_customers_dataset.customer_id = olist_orders_dataset.customer_id GROUP BY customer_city ORDER BY orders_count DESC LIMIT 10",
-        "Podział Metod Płatności": "SELECT payment_type, COUNT(*) as count, AVG(payment_value) as avg_value FROM olist_order_payments_dataset GROUP BY payment_type ORDER BY count DESC",
-        "Najpopularniejsze Kategorie": "SELECT product_category_name, COUNT(*) as count FROM olist_products_dataset GROUP BY product_category_name ORDER BY count DESC LIMIT 15"
+        "1. Finanse: Status vs Średnia Wartość": "SELECT order_status, COUNT(*) AS total_orders, ROUND(AVG(payment_value), 2) AS avg_order_value FROM olist_orders_dataset o JOIN olist_order_payments_dataset p ON o.order_id = p.order_id GROUP BY order_status ORDER BY avg_order_value DESC",
+        "2. Logistyka: Anomalie Kosztów Wysyłki (%)": "SELECT order_id, price, freight_value, ROUND((freight_value / price) * 100, 2) AS freight_ratio_pct FROM olist_order_items ORDER BY freight_ratio_pct DESC LIMIT 10",
+        "3. NPS: Top Spóźnieni Sprzedawcy": "SELECT seller_id, COUNT(*) as total_orders, SUM(CASE WHEN order_delivered_customer_date > order_estimated_delivery_date THEN 1 ELSE 0 END) as late_count FROM olist_orders_dataset GROUP BY seller_id HAVING total_orders > 10 ORDER BY late_count DESC LIMIT 10",
+        "4. Satysfakcja: Płatność vs Ocena": "SELECT payment_type, ROUND(AVG(payment_value), 2) as avg_revenue, ROUND(AVG(review_score), 2) as avg_satisfaction FROM olist_order_payments_dataset p JOIN olist_order_reviews_dataset r ON p.order_id = r.order_id GROUP BY payment_type ORDER BY avg_satisfaction DESC",
+        "5. Algorytm: Błąd Estymacji (Miasta)": "SELECT customer_city, ROUND(AVG(julianday(order_estimated_delivery_date) - julianday(order_delivered_customer_date)), 2) AS avg_days_off FROM olist_orders_dataset o JOIN olist_customers_dataset c ON o.customer_id = c.customer_id WHERE order_delivered_customer_date IS NOT NULL GROUP BY customer_city HAVING COUNT(*) > 20 ORDER BY avg_days_off ASC LIMIT 15",
+        "6. Trendy: Weekend vs Tydzień (Satysfakcja)": "SELECT CASE WHEN strftime('%w', order_purchase_timestamp) IN ('0', '6') THEN 'Weekend' ELSE 'Weekday' END as period, COUNT(*) as total, ROUND(AVG(review_score), 2) as avg_score FROM olist_orders_dataset o JOIN olist_order_reviews_dataset r ON o.order_id = r.order_id GROUP BY period",
+        "7. Ryzyko: Straty (Opóźnione + Ocena 1)": "SELECT ROUND(SUM(payment_value), 2) as total_at_risk_BRL FROM olist_order_payments_dataset p JOIN olist_orders_dataset o ON p.order_id = o.order_id JOIN olist_order_reviews_dataset r ON o.order_id = r.order_id WHERE o.order_delivered_customer_date > o.order_estimated_delivery_date AND r.review_score = 1"
     }
     
     selected_preset = st.selectbox("Szybkie Zapytania (Pre-sets):", list(preset_queries.keys()))
