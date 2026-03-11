@@ -4,8 +4,9 @@ matplotlib
 seaborn
 scikit-learn
 sqlalchemy
-streamlit
+streamlit>=1.30.0
 plotly
 fpdf
 textblob
 joblib
+altair<5
