@@ -96,7 +96,9 @@ LIMIT 10;
 *Data-driven identification of problematic fulfillment partners.*
 ![Seller Delay Analysis](./seller_delay_analysis.png)
 
+
 *Average generated volume of delays, requiring operational intervention*
+
 ![Average Delivery Delays Total](avg_delay_total.png)
 
 ```sql
